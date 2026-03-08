@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { router, publicProcedure } from '../config/trpc'
+import { fetchFlights } from '../services/opensky'
 
 export const flightsRouter = router({
   getAll: publicProcedure
@@ -13,11 +14,19 @@ export const flightsRouter = router({
       })
     )
     .query(async ({ input }) => {
-      console.log('getAll called with:', input)
+      const { country, ...bboxParams } = input
+
+      let flights = await fetchFlights(bboxParams)
+
+      if (country) {
+        flights = flights.filter(f =>
+          f.country.toLowerCase() === country.toLowerCase()
+        )
+      }
 
       return {
-        flights: [],
-        total: 0,
+        flights,
+        total: flights.length,
         updatedAt: new Date().toISOString(),
       }
     }),
