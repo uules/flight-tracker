@@ -3,10 +3,16 @@ import { useFlights } from '../hooks/useFlights';
 import { useMap } from 'react-map-gl/maplibre';
 import { useEffect, useMemo } from 'react';
 import { GeoJSONSource } from 'maplibre-gl';
+import airplane from '../assets/airplane.svg';
 
 const EMPTY_GEOJSON = flightsToGeoJSON([]);
+
 const SOURCE_ID = 'flights';
 const LAYER_ID = 'flights-layer';
+const ICON_ID = 'airplane-icon';
+
+const ICON = new Image(24, 24);
+ICON.src = airplane;
 
 export default function FlightsLayer() {
   const { data } = useFlights();
@@ -23,25 +29,28 @@ export default function FlightsLayer() {
 
     let registered = false;
 
-    function setup() {
+    function addIcon() {
+      if (!map.hasImage(ICON_ID)) map.addImage(ICON_ID, ICON);
       if (!map.getSource(SOURCE_ID)) {
-        map.addSource(SOURCE_ID, {
-          type: 'geojson',
-          data: EMPTY_GEOJSON,
-        });
+        map.addSource(SOURCE_ID, { type: 'geojson', data: EMPTY_GEOJSON });
         map.addLayer({
           id: LAYER_ID,
-          type: 'circle',
+          type: 'symbol',
           source: SOURCE_ID,
-          paint: {
-            'circle-radius': 3,
-            'circle-color': '#60a5fa',
-            'circle-opacity': 0.8,
-            'circle-stroke-width': 1,
-            'circle-stroke-color': '#fff',
+          layout: {
+            'icon-image': ICON_ID,
+            'icon-size': 0.8,
+            'icon-rotate': ['get', 'heading'],
+            'icon-rotation-alignment': 'map',
+            'icon-allow-overlap': true,
           },
         });
       }
+    }
+
+    function setup() {
+      if (ICON.complete) addIcon();
+      else ICON.onload = addIcon;
     }
 
     if (map.isStyleLoaded()) {
