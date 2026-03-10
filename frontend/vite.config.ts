@@ -7,10 +7,13 @@ import path from 'path';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
+  const PORT = Number(env.VITE_PORT) || 5173;
+  const SERVER_URI = env.VITE_SERVER_URI || 'http://localhost:3000'
+
   if (!env.VITE_MAPTILER_KEY) {
     console.warn('⚠️  VITE_MAPTILER_KEY is not set in .env');
   }
-  
+
   return {
     plugins: [react(), tailwindcss()],
     resolve: {
@@ -19,9 +22,9 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      port: 5173,
+      port: PORT,
       proxy: {
-        '/trpc': 'http://localhost:3000',
+        '/trpc': SERVER_URI,
       },
     },
   };

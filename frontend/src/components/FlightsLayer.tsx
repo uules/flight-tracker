@@ -1,9 +1,9 @@
 import { flightsToGeoJSON } from '../utils/flightsToGeoJSON';
 import { useFlights } from '../hooks/useFlights';
 import { useMap } from 'react-map-gl/maplibre';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { GeoJSONSource } from 'maplibre-gl';
-import airplane from '../assets/airplane.svg';
+import airplane from '../../assets/airplane.svg';
 import type { FlightFilters } from '../types/filters';
 
 const EMPTY_GEOJSON = flightsToGeoJSON([]);

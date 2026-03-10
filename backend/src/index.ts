@@ -7,7 +7,7 @@ import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './routes';
 
 const app = express();
-const PORT = Number(process.env.PORT) || 3000
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(cors());
 app.use(morgan('dev'));
