@@ -1,4 +1,4 @@
-import { Flight } from '@backend/types/flights';
+import { Flight } from '@backend/types';
 import type { FeatureCollection, Point } from 'geojson';
 
 export function flightsToGeoJSON(flights: Flight[]): FeatureCollection<Point> {

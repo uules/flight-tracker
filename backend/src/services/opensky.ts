@@ -1,6 +1,6 @@
 import axios from 'axios';
 import redis from '../config/redis';
-import type { RawStateVector, Flight, OpenSkyResponse } from '../types/flights';
+import type { RawStateVector, Flight, OpenSkyResponse } from '../types';
 
 const OPENSKY_URL = 'https://opensky-network.org/api';
 const CACHE_TTL = 10; // secs
