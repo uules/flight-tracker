@@ -25,6 +25,11 @@ export type RawStateVector = [
   number | null,                 // 17 category
 ]
 
+export interface OpenSkyToken {
+  access_token: string;
+  expires_in: number;
+}
+
 export interface OpenSkyResponse {
   time: number;
   states: RawStateVector[] | null;
