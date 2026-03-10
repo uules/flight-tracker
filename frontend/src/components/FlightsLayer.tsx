@@ -1,9 +1,10 @@
 import { flightsToGeoJSON } from '../utils/flightsToGeoJSON';
 import { useFlights } from '../hooks/useFlights';
 import { useMap } from 'react-map-gl/maplibre';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { GeoJSONSource } from 'maplibre-gl';
 import airplane from '../assets/airplane.svg';
+import type { FlightFilters } from '../types/filters';
 
 const EMPTY_GEOJSON = flightsToGeoJSON([]);
 
@@ -14,14 +15,18 @@ const ICON_ID = 'airplane-icon';
 const ICON = new Image(24, 24);
 ICON.src = airplane;
 
-export default function FlightsLayer() {
-  const { data } = useFlights();
+interface Props {
+  filters: FlightFilters;
+}
+
+export default function FlightsLayer({ filters }: Props) {
+  const { current: mapRef } = useMap();
+
+  const { data } = useFlights(filters);
   const flightsData = useMemo(
     () => (data ? flightsToGeoJSON(data.flights) : EMPTY_GEOJSON),
     [data],
   );
-
-  const { current: mapRef } = useMap();
 
   useEffect(() => {
     if (!mapRef) return;

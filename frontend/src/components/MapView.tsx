@@ -1,9 +1,14 @@
 import Map from 'react-map-gl/maplibre';
 import FlightsLayer from './FlightsLayer';
+import type { FlightFilters } from '../types/filters';
 
 const MAP_STYLE_URL = `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`;
 
-export default function MapView() {
+interface Props {
+  filters: FlightFilters;
+}
+
+export default function MapView({ filters }: Props) {
   return (
     <Map
       id="mainMap"
@@ -16,7 +21,7 @@ export default function MapView() {
         latitude: 40,
       }}
     >
-      <FlightsLayer />
+      <FlightsLayer filters={filters} />
     </Map>
   );
 }
